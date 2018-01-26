@@ -1,0 +1,274 @@
+/*install fonts.*/
+@font-face {
+    font-family: 'Nunito';
+    src: url(Nunito-Regular.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url(Nunito-SemiBold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url(Nunito-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url(Nunito-Light.ttf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url(Nunito-Black.ttf);
+    font-weight: 900;
+}
+
+
+/*Main Params*/
+*{
+  padding: 0;
+  margin: 0;
+  border: 0;
+  clear: none;
+  text-align: center;
+}
+body{
+  font-family: 'Nunito', normal;
+}
+.container{
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/*Columns*/
+._column{
+  width: 20%;
+  height: 100%;
+  float: left;
+}
+.column{
+  width: 60%;
+  height: 100%;
+  float: left;
+}
+.columnLeft{
+}
+.columnMid{
+  background-color: #FFF;
+}
+.columnRight{
+}
+
+/*Side Rows*/
+.row{
+  width: 100%;
+  height: auto;
+}
+._column>.rowTop{
+  height: 80vh;
+}
+._column>.rowBtm{
+  height: 20vh;
+}
+
+/*Side Rows => Individual Styles*/
+.cross{
+  background-color: #FFDED3;
+  color: #FF3B27;
+}
+.inter{
+  background-color: #FFB381;
+  color: #FF5B09;
+}
+.check{
+  background-color: #D7FAE3;
+  color: #45E262;
+}
+.return{
+  background-color: #86C6D4;
+  color: #1D95CE;
+}
+
+/*Centre Rows*/
+.column>.row{
+  height: 28vh;
+}
+
+/*Centre Rows => Individual Styles*/
+.column>.rowTop{
+  /*background-color: #1D95CE;*/
+}
+.rowMidTop{
+  color: #FF3B27;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 1.5em;
+
+  /*background-color: #FF3B27;*/
+}
+.rowMidBtm{
+  color: #45E262;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 1.5em;
+
+  /*background-color: #45E262;*/
+}
+.column>.rowBtm{
+  /*background-color: #1D95CE;*/
+  height: 16vh;
+  padding: 7% 0 0 0;
+}
+
+/*Centre Top Row*/
+.halves{
+  width:50%;
+  height: 100%;
+  float:left;
+
+}
+.score{
+  clear: both;
+  width: 15%;
+  height: auto;
+  background-color: #1D95CE;
+  margin: 10% auto;
+  border-radius: 15px;
+  padding: 5px 5px;
+  color: #fff;
+}
+.score>span {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 2.5em;
+  font-family: 'Nunito', bold;
+
+}
+.teamContainer{
+  width: 50%;
+  height: 15%;
+  margin: -30px auto;
+  clear: both;
+}
+.team{
+  width: 24%;
+  height: 100%;
+  background-color: #1D95CE;
+  float: left;
+  margin: 0 0.5% 3% 0.5%;
+}
+.team:nth-child(2){
+  background-color: #87C7E5;
+}
+.teamContainer>span{
+  padding-top: 30px;
+  text-transform: uppercase;
+  color: #003B79;
+  font-size: 1.3em;
+}
+/*Centre Bottom Row*/
+.questionContainer{
+  width: 18%;
+  height: 100%;
+  margin: 0 auto;
+  text-align: center
+}
+.round{
+  position: relative;
+  border-radius: 50%;
+  width: 21.23%;
+  height: auto;
+  float: left;
+  background-color: #fff;
+  color: #1D95CE;
+  border: 0.15vw solid #1D95CE;
+  margin: 0 0.5%;
+}
+/*.round:nth-child(1){
+  background-color: #1D95CE;
+  color: #fff;
+  margin: 0 1% 0 0;
+}*/
+.round:last-child{
+  margin: 0 0 0 1%;
+}
+.round:before{
+  content: "";
+	display: block;
+	padding-top: 100%;
+}
+.round>span{
+  position:  absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+  padding: 12% 0 0 0;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+/*Question*/
+.rowMidTop>h1{
+  color: #1a1a1a;
+  text-transform: none;
+  font-size: 1.6em;
+  font-weight: 300;
+  width: 80%;
+  margin: 10px auto;
+}
+
+/*Answer*/
+.rowMidBtm>h1{
+  color: #1a1a1a;
+  text-transform: uppercase;
+  font-size: 2em;
+  font-weight: bold;
+  width: 80%;
+  margin: 10px auto;
+}
+
+/*Symbols & Buttons*/
+._column>.row{
+  font-size: 6em;
+}
+._column>.rowTop{
+  font-size: 8.5em;
+  line-height: 80vh;
+}
+._column>.rowBtm{
+  line-height: 20vh;
+}
+
+/*Hover Styles*/
+.cross:hover{
+  background-color: #FF9A9A;
+  color: #B33B3B;
+}
+.inter:hover{
+  background-color: #FF8B3D;
+  color: #B35400;
+}
+.check:hover{
+  background-color: #79EEA1;
+  color: #32984A;
+}
+.return:hover{
+  background-color: #40A4BB;
+  color: #005B77;
+}
+
+.active {
+    background-color: #1D95CE !important;
+    border-radius: 50%;
+    color: #fff;
+}
