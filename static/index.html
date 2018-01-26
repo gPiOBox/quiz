@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+      <link rel="stylesheet" type="text/css" href="style.css">
+      <link rel="stylesheet" href="css/fontawesome-all.css">
+      <title>University Challenge GUI</title>
+      <meta name="description" content="The GUI for LUTC's University Challenge project.">
+    </head>
+
+    <body>
+        <div class="container">
+            <!--LEFT COLUMN-->
+            <div class="_column columnLeft">
+              <button onclick="answer_incorrect();" class="row rowTop cross">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+
+              <button onclick="" class="row rowBtm inter">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <!---->
+
+            <!--CENTRE COLUMN-->
+            <div class="column columnMid">
+              <div class="row rowTop">
+                <div class="team_current">Current Team: <div id="team_current">None</div></div>
+                <div class="halves">
+                  <div class="score"><span id="score_0">0</span></div>
+
+                  <div class="teamContainer">
+                    <!--<div class="team"></div>
+                    <div class="team"></div>
+                    <div class="team"></div>
+                    <div class="team"></div> -->
+                    <span>Team A</span>
+                  </div>
+                </div>
+
+                <div class="halves">
+                  <div class="score"><span id="score_1">0</span></div>
+
+                  <div class="teamContainer">
+                    <!-- <div class="team"></div>
+                    <div class="team"></div>
+                    <div class="team"></div>
+                    <div class="team"></div> -->
+                    <span>Team B</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row rowMidTop">
+                <p>Question</p>
+                <h1 id="question">Loading...</h1>
+              </div>
+
+              <div class="row rowMidBtm">
+                <p>Answer</p>
+                <h1 id="answer"></h1>
+              </div>
+
+              <div class="row rowBtm">
+                <div class="questionContainer">
+                  <div class="round question"><span id="round_0" class="active">S</span></div>
+                  <div class="round question"><span id="round_1" class="inactive">1</span></div>
+                  <div class="round question"><span id="round_2" class="inactive">2</span></div>
+                  <div class="round question"><span id="round_3" class="inactive">3</span></div>
+                </div>
+              </div>
+            </div>
+            <!---->
+
+            <!--RIGHT COLUMN-->
+            <div class="_column columnRight">
+              <button onclick="answer_correct();" class="row rowTop check">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </button>
+
+              <button onclick="question_fetch();" class="row rowBtm return">
+                <i class="fa fa-undo" aria-hidden="true"></i>
+              </button>
+            </div>
+            <!---->
+
+
+        </div>
+        <script src="socket.io.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <script>
+            
+            // Fields
+            var field_question = "question";
+            var field_answer = "answer";
+            var field_score = "score";
+            var field_lights = "lights";
+            
+            var team = 2;
+            
+            var status = 0;
+            var count = 0;
+            
+            var socket = io.connect('http://192.168.1.64:8124');
+            
+            socket.emit('test', 'test');
+            socket.on('test', function(data){
+                console.log(data);
+                question_fetch();
+                scoring_reset();
+            });
+            
+            socket.on('scoring', function(data){
+                console.log(data);
+            });
+            
+            function test(){
+                socket.emit('test', 'test');
+            }
+            
+            document.onkeypress = function(evt) {
+                evt = evt || window.event;
+                var charCode = evt.keyCode || evt.which;
+                var charStr = String.fromCharCode(charCode);
+                if(status == 0){
+                    if(charStr == "1" || charStr == "2" || charStr == "3" || charStr == "4"){
+                        team = 0;
+                        document.getElementById('team_current').innerHTML = "A";
+                        alert("Team A pressed");
+                    } else if (charStr == "5" || charStr == "6" || charStr == "7" || charStr == "8"){
+                        team = 1;
+                        alert("Team B pressed");
+                        document.getElementById('team_current').innerHTML = "B";
+                    }
+                }
+            };
+            
+            
+            function docount(){
+                if(status == 0){
+                    status = 1;
+                    count ++;
+                    document.getElementById('round_' + (count - 1)).classList = "inactive";
+                    document.getElementById('round_' + count).classList = "active";
+                } else {
+                    if(count == 3){
+                        status = 0;
+                        count = 0;
+                        document.getElementById('round_3').classList = "inactive";
+                        document.getElementById('round_' + count).classList = "active";
+                        document.getElementById('team_current').innerHTML = "None";
+                        team = 2;
+                    }
+                    else
+                    {
+                        count++;
+                        document.getElementById('round_' + (count - 1)).classList = "inactive";
+                        document.getElementById('round_' + count).classList = "active";
+                    }
+                }
+                console.log(count);
+            }
+            
+            // Scoring
+            function answer_correct(){
+                
+                console.log("status " + status + " team " + team);
+                
+                var response = {'answer': 'correct', 'status': status, 'team': team}
+                
+                socket.emit('scoring', response);
+                
+                docount();
+                question_fetch();
+            }
+            
+            function answer_incorrect(){
+                
+                var response = {'answer': 'incorrect', status: status, 'team': team}    
+                
+                socket.emit('scoring', response);
+                if(count == 0){
+                    if(team == 1){
+                        team = 0;
+                        document.getElementById('team_current').innerHTML = "A";
+                    }
+                    else if(team == 0){
+                        team = 1;
+                        document.getElementById('team_current').innerHTML = "B";
+                    }
+                }
+                docount();
+                question_fetch();
+            }
+            
+            function scoring_reset(){
+                socket.emit('scoring', 'reset');
+            }
+            
+            
+            // Questions
+            function question_init(){
+                socket.emit('question', 'init');
+            }
+            
+            function question_fetch(){
+                socket.emit('question', 'fetch');
+                document.getElementById(field_question).innerHTML = "Loading...";
+                document.getElementById(field_answer).innerHTML = "";
+            }
+            
+            
+            // Lighting
+            function lighting_reset(){
+                socket.emit('lighting', 'reset');
+            }
+            
+            socket.on('question', function(data){
+                console.log(data);
+                
+                document.getElementById(field_question).innerHTML = data.question;
+                document.getElementById(field_answer).innerHTML = data.correct_answer;
+            });
+            
+            socket.on('score', function(data){
+                document.getElementById(field_score + "_" + 0).innerHTML = data[0];
+                document.getElementById(field_score + "_" + 1).innerHTML = data[1];
+            });
+            
+            socket.on('lights', function(data){
+                for (var i=1; i<=players; i++){
+                    document.getElementById(field_lights + "_" + i).innerHTML = data[i];
+                }
+            });
+
+        </script>
+    </body>
+</html>
