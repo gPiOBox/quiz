@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <title>Quiz!</title>
+    </head>
+    <body>
+        
+        <button onclick="test();">Socket Test</button>
+        
+        <button onclick="answer_correct(); question_fetch(); lighting_reset(); button_listen();">Correct</button>
+        <button onclick="answer_incorrect(); question_fetch(); lighting_reset(); button_listen();">Incorrect</button>
+        
+        <div id="score"></div>
+        <div id="question"></div>
+        <div id="answer"></div>
+        
+        <div id="lights">
+            <!-- Team A -->
+            <div id="lights_1"></div>
+            <div id="lights_2"></div>
+            <div id="lights_3"></div>
+            <div id="lights_4"></div>
+            <!-- Team B -->
+            <div id="lights_5"></div>
+            <div id="lights_6"></div>
+            <div id="lights_7"></div>
+            <div id="lights_8"></div>
+        </div>
+        
+        <script src="socket.io.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <script>
+            
+            // Fields
+            var field_question = "question";
+            var field_answer = "answer";
+            var field_score = "score";
+            var field_lights = "lights";
+            
+            var socket = io.connect('http://localhost:8124');
+            console.log('test');
+            socket.emit('test', 'test');
+            socket.on('test', function(data){
+                console.log(data);
+            });
+            socket.emit('scoring', 'incorrect');
+            socket.on('scoring', function(data){
+                console.log(data);
+            });
+            
+            function test(){
+                socket.emit('test', 'test');
+            }
+            
+            
+            // Scoring
+            function answer_correct(){
+                socket.emit('scoring', 'correct');
+            }
+            
+            function answer_incorrect(){
+                socket.emit('scoring', 'incorrect');
+            }
+            
+            function scoring_reset(){
+                socket.emit('scoring', 'reset');
+            }
+            
+            
+            // Questions
+            function question_fetch(){
+                socket.emit('question', 'fetch');
+            }
+            
+            
+            // Lighting
+            function lighting_reset(){
+                socket.emit('lighting', 'reset');
+            }
+            
+            
+            
+            socket.on('question', function(data){
+                document.getElementById(field_question) = data['question'];
+                document.getElementById(field_answer) = data['answer'];
+            });
+            
+            socket.on('score', function(data){
+               document.getElementById(field_score) = data;
+            });
+            
+            socket.on('lights', function(data){
+                for (var i=1; i<=players; i++){
+                    document.getElementById(field_lights + "_" + i) = data[i];
+                }
+            });
+            
+            
+            
+        </script>
+        
+    </body>
+</html>
