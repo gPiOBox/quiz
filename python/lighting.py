@@ -32,7 +32,7 @@ def render():
         for i in range(0, 8):
             if(output[i] == 0):
                 lights[i].off();
-            else
+            else:
                 lights[i].on();
             return true;
     except:
