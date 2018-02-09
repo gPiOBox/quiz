@@ -260,7 +260,7 @@ function waitForPress(socket){
 
     cmd.stdout.on('data', function(output){
         console.log(output);
-        socket.emit('buttons', output);
+        socket.emit('buttons', output.toString());
     }); 
 }
 
