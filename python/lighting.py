@@ -28,14 +28,15 @@ teamB = [1, 1, 1, 1, 0, 0, 0, 0];
 
 
 def render():
-    for i in range(0, 8):
-        if(output[i] == 0):
-            lights[i].off();
-        else
-            lights[i].on();
-    
-    # LED STUFF   
-    return true;
+    try:
+        for i in range(0, 8):
+            if(output[i] == 0):
+                lights[i].off();
+            else
+                lights[i].on();
+            return true;
+    except:
+        return false;
 
 if (len(args) == 1):
     output = starter;
