@@ -248,7 +248,25 @@
             });
             
             socket.on('buttons', function(data){
-                if(data != 0){
+		
+                if(data != "0"){
+			console.log("Button: " + data + "pressed");
+		        charStr = data;
+			if(count == 0){
+			    console.log("Count is 0");
+	                    if(charStr == 1 || charStr == 2 || charStr == 3 || charStr == 4){
+	                        console.log("Te")
+				team = 0;
+	                        document.getElementById('team_current').innerHTML = "A";
+	                        alert("Team A pressed");
+	                    } else if (charStr == 5 || charStr == 6 || charStr == 7 || charStr == 8){
+	                        team = 1;
+	                        alert("Team B pressed");
+	                        document.getElementById('team_current').innerHTML = "B";
+	                    }
+	                }
+
+
                     if(team == 2){
                         if(data == "1" || data == "2" || data == "3" || data == "4"){
                             team = 0;

@@ -157,10 +157,9 @@ io.on('connection', function(socket){
             console.log('questions');
             switch (data) {
                 case 'listen':
-                    waitForPress();
+                    waitForPress(socket);
                 default:
-                    socket.emit('buttons', null);
-                    socket.emit('error', 'Invalid Action');
+                    //socket.emit('error', 'Invalid Action');
                     break;
             }
         }
@@ -259,7 +258,7 @@ function waitForPress(socket){
     var cmd = process.spawn("python", [buttons_file]);
 
     cmd.stdout.on('data', function(output){
-        console.log(output);
+        console.log(output.toString());
         socket.emit('buttons', output.toString());
     }); 
 }
