@@ -102,7 +102,7 @@
             var status = 0;
             var count = 0;
             
-            var socket = io.connect('http://192.168.1.64:8124');
+            var socket = io.connect('/');
             
             socket.emit('test', 'test');
             socket.on('test', function(data){
@@ -119,7 +119,7 @@
                 socket.emit('test', 'test');
             }
             
-            document.onkeypress = function(evt) {
+            /*document.onkeypress = function(evt) {
                 evt = evt || window.event;
                 var charCode = evt.keyCode || evt.which;
                 var charStr = String.fromCharCode(charCode);
@@ -134,7 +134,7 @@
                         document.getElementById('team_current').innerHTML = "B";
                     }
                 }
-            };
+            };*/
             
             
             function docount(){
@@ -173,6 +173,9 @@
                 
                 docount();
                 question_fetch();
+                
+                
+                buttons_listen();    
             }
             
             function answer_incorrect(){
@@ -192,6 +195,9 @@
                 }
                 docount();
                 question_fetch();
+                
+                
+                buttons_listen();    
             }
             
             function scoring_reset(){
@@ -216,6 +222,13 @@
                 socket.emit('lighting', 'reset');
             }
             
+            // Buttons
+            
+            function buttons_listen(){
+                socket.emit('buttons', 'listen');
+            }
+            
+            // Listeners
             socket.on('question', function(data){
                 console.log(data);
                 
@@ -231,6 +244,47 @@
             socket.on('lights', function(data){
                 for (var i=1; i<=players; i++){
                     document.getElementById(field_lights + "_" + i).innerHTML = data[i];
+                }
+            });
+            
+            socket.on('buttons', function(data){
+                if(data != 0){
+                    if(team == 2){
+                        if(data == "1" || data == "2" || data == "3" || data == "4"){
+                            team = 0;
+                            document.getElementById('team_current').innerHTML = "A";
+                            alert("Team A pressed");
+                        } else if (charStr == "5" || charStr == "6" || charStr == "7" || charStr == "8"){
+                            team = 1;
+                            alert("Team B pressed");
+                            document.getElementById('team_current').innerHTML = "B";
+                        }
+                    }
+                    else if (team == 1)
+                    {
+                        if(data == "1" || data == "2" || data == "3" || data == "4"){
+                            buttons_listen();
+                        }
+                        else
+                        {
+                            socket.emit('lighting', {status: team, button: data});
+                        }
+                    }
+                     else if (team == 0)
+                    {
+                        if(data == "5" || data == "6" || data == "7" || data == "8"){
+                            buttons_listen();
+                        }
+                        else
+                        {
+                            socket.emit('lighting', {status: team, button: data});
+                        }
+                    }
+                    else
+                    {
+                        alert("Unexpected error: Invalid team, team: " + team);
+                        buttons_listen();
+                    }
                 }
             });
 

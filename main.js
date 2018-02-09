@@ -5,15 +5,17 @@ var fs = require('fs');
 var process = require('child_process');
 
 var scoring_file = 'python/scoring.py';
-var buttons_file = 'python/test.py';
-var lighting_file = 'python/test.py';
-var questions_file = 'python/ext/api.py';
+var buttons_file = 'python/buttons.py';
+var lighting_file = 'python/lighting.py';
+var questions_file = 'python/api.py';
 
 
 var question_data = [];
 var question_curr = 0;
 
 var score = [0,0];
+var state = 2;
+
 
 var init = false;
 
@@ -112,9 +114,11 @@ io.on('connection', function(socket){
             switch (data.answer) {
                 case 'incorrect':
                     updateScore(socket, 'incorrect', data.status, data.team);
+                    state = data.status;
                     break;
                 case 'correct':
                     updateScore(socket, 'correct', data.status, data.team);
+                    state = data.status;
                     break;
                 case 'reset':
                     resetScore(socket);
@@ -135,7 +139,7 @@ io.on('connection', function(socket){
             console.log('questions');
             switch (data) {
                 case 'update':
-                    updateLights(socket);
+                    updateLights(socket, data.team, data.button);
                 case 'reset':
                     resetLights(socket);
 
@@ -260,4 +264,6 @@ function waitForPress(socket){
     }); 
 }
 
-// General
+// NOTE: Could move all game logic to backend - this would then only allow one instance
+
+// TODO: Update the LED and Button GPIO binding values
