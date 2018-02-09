@@ -142,13 +142,11 @@ io.on('connection', function(socket){
                     updateLights(socket, data.team, data.button);
                 case 'reset':
                     resetLights(socket);
-
                     break;
                 default:
-                    socket.emit('lighting', null);
-                    socket.emit('error', 'Invalid Action');
+                    //socket.emit('error', 'Invalid Action');
                     break;
-            }
+		}
         }
     });
 
@@ -190,7 +188,7 @@ function getQuestions(){
     cmd.stdout.on('data', function(output){
         console.log(output);
         question_data = JSON.parse(output);
-    });   
+    });   /home/pi/quiz/quiz/main.js:149:28
 }
 
 function sendQuestion(socket){

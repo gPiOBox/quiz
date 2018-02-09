@@ -109,6 +109,7 @@
                 console.log(data);
                 question_fetch();
                 scoring_reset();
+		buttons_listen();
             });
             
             socket.on('scoring', function(data){
