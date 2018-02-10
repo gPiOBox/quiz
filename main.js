@@ -146,7 +146,7 @@ io.on('connection', function(socket){
                 default:
                     //socket.emit('error', 'Invalid Action');
                     break;
-		}
+            }
         }
     });
 
@@ -188,7 +188,7 @@ function getQuestions(){
     cmd.stdout.on('data', function(output){
         console.log(output);
         question_data = JSON.parse(output);
-    });   /home/pi/quiz/quiz/main.js:149:28
+    });
 }
 
 function sendQuestion(socket){
