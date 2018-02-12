@@ -15,6 +15,6 @@
   "scripts": {
     "test": "main.js"
   },
-  "author": "GPIO Support Services, Clickpoint UK, Lincoln UTC Students",
+  "author": "GPIO Support Services, Clickpoint UK, Lincoln UTC Computer Science students",
   "license": "ISC"
 }
