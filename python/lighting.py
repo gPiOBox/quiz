@@ -1,24 +1,22 @@
 #!/usr/bin/python
 
-import sys
-
-from gpiozero import LED
+import sys,os
 
 args = sys.argv;
 
 output = [];
 
 # Team A
-LED1 = LED(17);
-LED2 = LED(18);
-LED3 = LED(27);
-LED4 = LED(22);
+LED1 = 17;
+LED2 = 18;
+LED3 = 27;
+LED4 = 22;
 
 # Team B
-LED5 = LED(11);
-LED6 = LED(12);
-LED7 = LED(13);
-LED8 = LED(15);
+LED5 = 11;
+LED6 = 12;
+LED7 = 13;
+LED8 = 15;
 
 lights = [LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8];
 
@@ -26,14 +24,16 @@ starter = [1, 1, 1, 1, 1, 1, 1, 1];
 teamA = [0, 0, 0, 0, 1, 1, 1, 1];
 teamB = [1, 1, 1, 1, 0, 0, 0, 0];
 
+def lightled(BCM_pin,status):
+	os.system('gpio -g write '+str(BCM_pin)+' '+str(status) );
 
 def render():
     try:
         for i in range(0, 8):
             if(output[i] == 0):
-                lights[i].off();
+                lightled(lights[i],0);
             else:
-                lights[i].on();
+                lightled(lights[i],1);
             return True;
     except:
         return False;
