@@ -16,7 +16,7 @@ LED4 = 22;
 LED5 = 11;
 LED6 = 12;
 LED7 = 13;
-LED8 = 15;
+LED8 = 19;
 
 lights = [LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8];
 
