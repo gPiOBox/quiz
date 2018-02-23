@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys,os
+import sys,os,json
 
 args = sys.argv;
 
@@ -25,17 +25,23 @@ teamA = [0, 0, 0, 0, 1, 1, 1, 1];
 teamB = [1, 1, 1, 1, 0, 0, 0, 0];
 
 def lightled(BCM_pin,status):
-	os.system('gpio -g write '+str(BCM_pin)+' '+str(status) );
+    os.system('gpio -g mode ' + str(BCM_pin) + ' out;')
+    os.system('gpio -g write '+str(BCM_pin)+' '+str(status) + ";");
+    #print(BCM_pin, status);
 
 def render():
     try:
+        i = 0;
         for i in range(0, 8):
             if(output[i] == 0):
                 lightled(lights[i],0);
+                #print(lights[i], "low");
             else:
                 lightled(lights[i],1);
-            return True;
-    except:
+                #print(lights[i], "high");
+        return True;
+    except Exception as e:
+        print(e);
         return False;
 
 if (len(args) == 1):
@@ -52,8 +58,6 @@ elif (len(args) == 3):
         output = starter;
         output[int(args[1])] = 0;
 
-success = render();
-if(success):
-    print str(output);
-else:
-    print "ERROR:Unable to render";
+render();
+
+print str(output);

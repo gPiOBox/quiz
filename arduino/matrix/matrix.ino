@@ -10,7 +10,7 @@ using.
 int matrix_buffer[] {255,255,255,255,255};
 int charList[256];
 int matrix_populate_delay = 0;
-int matrix_update_delay = 1000;
+int matrix_update_delay = 500;
 int updates_per_second = 2;
  
  
@@ -152,6 +152,7 @@ void createCharList(){
   charList[97]  = 126;
   charList[88]  = 256; //Special Case for Do Not Update
   charList[32]  =   0; //Blank
+  charList[110]  =   0; //Blank
   charList[33]  = 256; //Special Case for !
   charList[63]  = 256; //Special Case for ?
 }

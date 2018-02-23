@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # FETCH CMD ARGUMENTS
-import sys, json
+import sys, json, serial
 args = sys.argv;
 
 # DEFINE VARIABLES
@@ -22,16 +22,20 @@ def calculate():
             score[answer_team] = score[answer_team] + 5;
         else:
             score[answer_team] = score[answer_team];
+            
+    render();
     print json.dumps(score);
 
 def render():
+    
+    output_str = "";
+    
     serPort = serial.Serial("/dev/ttyACM0", 115200, timeout=1); # open serial port
     
-    score_a = list(score[0]);
-    score_b = list(score[1]);
+    score_a = list(str(score[0]));
+    score_b = list(str(score[1]));
     
-    output = [0,0,0,0,0,0];
-    output_str
+    output = [" ", " ", " ", " ", " ", " "];
     
     i=0;
     for i in range(0,5):
@@ -47,17 +51,17 @@ def render():
             output[2] = score_a[2];
         
         if(len(score_b) == 1):
-            output[3] = score_a[3];
+            output[3] = score_b[0];
         elif (len(score_b) == 2):
-            output[3] = score_a[3];
-            output[4] = score_a[4];
+            output[3] = score_b[0];
+            output[4] = score_b[1];
         elif (len(score_b) == 3):
-            output[3] = score_a[3];
-            output[4] = score_a[4];
-            output[5] = score_a[5];
+            output[3] = score_b[0];
+            output[4] = score_b[1];
+            output[5] = score_b[2];
     
     for j in range(0,5):
-        output_str = output_str + output[j];
+        output_str = output_str + str(output[j]);
     
     serPort.write(str.encode(str(output_str)));
     serPort.close();
