@@ -9,7 +9,7 @@ else:
     url = urllib.urlopen("https://opentdb.com/api.php?amount=10&type=boolean");
     question = json.loads(url.read().decode());
         
-    open('../python/data.json', 'w').close();
+    open('data.json', 'w').close();
 
     with open('data.json', 'w') as outfile:
         json.dump(question, outfile);

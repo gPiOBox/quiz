@@ -28,6 +28,9 @@ app.get('/test.html', function(req, res){
     res.sendFile(__dirname + '/static/index2.html');
 });
 
+app.get('/api_call.js', function(req, res){
+    res.sendFile(__dirname + '/static/api_call.js');
+});
 
 app.get('/socket.io.js', function(req, res){
     res.sendFile(__dirname + '/static/socket.io.js');
@@ -188,22 +191,18 @@ function getQuestions(){
     cmd.stdout.on('data', function(output){
         console.log(output);
         question_data = JSON.parse(output);
+
     });
 }
 
 function sendQuestion(socket){
-    try {
-        var cmd = process.spawn("python", [questions_file]);
-
-        cmd.stdout.on('data', function(output){
-            console.log(output);        
-            question_data = JSON.parse(output);
-            socket.emit('question', question_data['results'][0]);
-            
-        });
-    } catch (err){
-        getQuestions();
-    }
+	var cmd = process.spawn("python", [questions_file]);
+	console.log("Spawning questions python file process.");
+	cmd.stdout.on('data', function(output){
+        console.log(output);
+		question_data = JSON.parse(output).results;
+        socket.emit('question', question_data[0]);
+    }); 
 }
 
 // Scoring

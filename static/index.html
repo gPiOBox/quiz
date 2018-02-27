@@ -89,7 +89,8 @@
         <script src="socket.io.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-        <script>
+        <script>            
+            var is_active = true;            
             
             // Fields
             var field_question = "question";
@@ -109,7 +110,7 @@
                 console.log(data);
                 question_fetch();
                 scoring_reset();
-		buttons_listen();
+		        buttons_listen();
             });
             
             socket.on('scoring', function(data){
@@ -165,40 +166,45 @@
             
             // Scoring
             function answer_correct(){
-                
-                console.log("status " + status + " team " + team);
-                
-                var response = {'answer': 'correct', 'status': status, 'team': team}
-                
-                socket.emit('scoring', response);
-                
-                docount();
-                question_fetch();
-                
-                
-                buttons_listen();    
+                if(is_active){
+                    console.log("status " + status + " team " + team);
+                    
+                    var response = {'answer': 'correct', 'status': status, 'team': team}
+                    
+                    socket.emit('scoring', response);
+                    
+                    docount();
+                    question_fetch();
+                    
+                    
+                    buttons_listen();
+                    
+                    is_active = false;
+                }  else {alert("A button needs pressing to proceed to the next round.");}
             }
             
             function answer_incorrect(){
-                
-                var response = {'answer': 'incorrect', status: status, 'team': team}    
-                
-                socket.emit('scoring', response);
-                if(count == 0){
-                    if(team == 1){
-                        team = 0;
-                        document.getElementById('team_current').innerHTML = "A";
+                if(is_active){
+                    var response = {'answer': 'incorrect', status: status, 'team': team}    
+                    
+                    socket.emit('scoring', response);
+                    if(count == 0){
+                        if(team == 1){
+                            team = 0;
+                            document.getElementById('team_current').innerHTML = "A";
+                        }
+                        else if(team == 0){
+                            team = 1;
+                            document.getElementById('team_current').innerHTML = "B";
+                        }
                     }
-                    else if(team == 0){
-                        team = 1;
-                        document.getElementById('team_current').innerHTML = "B";
-                    }
-                }
-                docount();
-                question_fetch();
-                
-                
-                buttons_listen();    
+                    docount();
+                    question_fetch();
+                    
+                    
+                    buttons_listen();
+                    is_active = false;
+                } else {alert("A button needs pressing to proceed to the next round.");}
             }
             
             function scoring_reset(){
@@ -253,6 +259,7 @@
                 if(data != "0"){
 			console.log("Button: " + data + "pressed");
 		        charStr = data;
+                is_active = true;
 			if(count == 0){
 			    console.log("Count is 0");
 	                    if(charStr == 1 || charStr == 2 || charStr == 3 || charStr == 4){
