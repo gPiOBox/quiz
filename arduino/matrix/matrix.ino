@@ -7,19 +7,19 @@ using.
 */
  
 // Added By LKPridgeon
-int matrix_buffer[] {255,255,255,255,255};
+int matrix_buffer[] {255,255,255,255};
 int charList[256];
 int matrix_populate_delay = 0;
 int matrix_update_delay = 500;
 int updates_per_second = 2;
  
  
-// Sloppy stuff that just 'works'
+// Base Code
 int dataIn = 7;
 int load = 6;
 int clock = 5;
 int mx = 1; //current display
-int maxInUse = 5; //change this variable to set how many MAX7219's you'll use so 3 boards = 3
+int maxInUse = 4; //change this variable to set how many MAX7219's you'll use so 3 boards = 3
 int e = 0; // just a varialble
 int D;
 int TeamA_Score=75;
@@ -150,9 +150,15 @@ void createCharList(){
   charList[101] =  59;
   charList[65]  = 126; //a
   charList[97]  = 126;
+  charList[66]  =  31; //b
+  charList[98]  =  31;
+  charList[69]  =  79; //d
+  charList[100] =  79;
+  charList[89]  =  93; //y
+  charList[121] =  93;
   charList[88]  = 256; //Special Case for Do Not Update
   charList[32]  =   0; //Blank
-  charList[110]  =   0; //Blank
+  charList[110] =   0; //Blank
   charList[33]  = 256; //Special Case for !
   charList[63]  = 256; //Special Case for ?
 }
@@ -177,7 +183,7 @@ void LED(int D){
 }
  
 void getChar() {
-  if (Serial.available()){data[maxInUse] = 0; // Bad way to remove overflow
+  if (Serial.available()){
     while (Serial.available()){
       char data[0];
       Serial.readBytes(data, maxInUse);
