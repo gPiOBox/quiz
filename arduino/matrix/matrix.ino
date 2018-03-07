@@ -187,7 +187,7 @@ void getChar() {
     while (Serial.available()){
       char data[0];
       Serial.readBytes(data, maxInUse);
-      data[maxInUse] = 0; // Bad way to remove overflow
+      data[maxInUse] = 0; // Remove overflow
       Serial.println(data);
       //Serial.println(maxInUse);
       for (int i=0; i<maxInUse; i++){
