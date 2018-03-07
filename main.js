@@ -139,17 +139,15 @@ io.on('connection', function(socket){
     
     socket.on('lighting', function(data){
         if(typeof data != undefined){
-            console.log('questions');
-            switch (data) {
-                case 'update':
-                    updateLights(socket, data.team, data.button);
-                case 'reset':
-                    resetLights(socket);
-                    break;
-                default:
-                    //socket.emit('error', 'Invalid Action');
-                    break;
-            }
+            console.log('lighting');
+            updateLights(socket, data.status, data.button);
+        }
+    });
+
+    socket.on('reset_lighting', function(data){
+        if(typeof data != undefined){
+            console.log('lighting');
+            resetLights(socket, data);
         }
     });
 
@@ -233,10 +231,11 @@ function resetScore(socket){
 // Lighting
 
 function updateLights(socket, status, button_pressed){
+    console.log('lighting: status - ' + status + " button -" + button_pressed);
     var cmd = process.spawn("python", [lighting_file, status, button_pressed]);
 
     cmd.stdout.on('data', function(output){
-        console.log(output);
+        console.log(output.toString());
         socket.emit('lighting', output);
     }); 
 }

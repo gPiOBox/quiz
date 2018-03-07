@@ -177,7 +177,7 @@ void LED(int D){
 }
  
 void getChar() {
-  if (Serial.available()){
+  if (Serial.available()){data[maxInUse] = 0; // Bad way to remove overflow
     while (Serial.available()){
       char data[0];
       Serial.readBytes(data, maxInUse);

@@ -176,7 +176,7 @@
                     docount();
                     question_fetch();
                     
-                    
+                    lighting_reset();
                     buttons_listen();
                     
                     is_active = false;
@@ -226,7 +226,7 @@
             
             // Lighting
             function lighting_reset(){
-                socket.emit('lighting', 'reset');
+                socket.emit('reset_lighting', team);
             }
             
             // Buttons
@@ -247,7 +247,11 @@
                 document.getElementById(field_score + "_" + 0).innerHTML = data[0];
                 document.getElementById(field_score + "_" + 1).innerHTML = data[1];
             });
-            
+           
+            socket.on('lighting', function(data){
+                console.log('lighting');
+            });
+
             socket.on('lights', function(data){
                 for (var i=1; i<=players; i++){
                     document.getElementById(field_lights + "_" + i).innerHTML = data[i];
@@ -257,6 +261,7 @@
             socket.on('buttons', function(data){
 		
                 if(data != "0"){
+			socket.emit('lighting', {status: team, button: data});
 			console.log("Button: " + data + "pressed");
 		        charStr = data;
                 is_active = true;
@@ -293,7 +298,7 @@
                         }
                         else
                         {
-                            socket.emit('lighting', {status: team, button: data});
+                            /* socket.emit('lighting', {status: team, button: data}); */
                         }
                     }
                      else if (team == 0)
@@ -303,7 +308,7 @@
                         }
                         else
                         {
-                            socket.emit('lighting', {status: team, button: data});
+                            /* socket.emit('lighting', {status: team, button: data}); */
                         }
                     }
                     else

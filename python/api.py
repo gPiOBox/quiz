@@ -6,7 +6,7 @@ if ipaddress=="127.0.0.1":
     question = json.loads(open('data.json').read())
     print json.dumps(question);
 else:
-    url = urllib.urlopen("https://opentdb.com/api.php?amount=10&type=boolean");
+    url = urllib.urlopen("http://opentdb.com/api.php?amount=10&type=boolean");
     question = json.loads(url.read().decode());
         
     open('data.json', 'w').close();

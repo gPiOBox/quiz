@@ -13,10 +13,10 @@ LED3 = 27;
 LED4 = 22;
 
 # Team B
-LED5 = 11;
-LED6 = 12;
-LED7 = 13;
-LED8 = 15;
+LED5 = 12;
+LED6 = 13;
+LED7 = 19;
+LED8 = 16;
 
 lights = [LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8];
 
@@ -48,15 +48,15 @@ if (len(args) == 1):
     output = starter;
 elif (len(args) == 2):
     output = starter;
-    output[args[1]] = 0;
+    output[(int(args[1]) -1)] = 0;
 elif (len(args) == 3):
-    if (args[2] == 0):
+    if (args[1] == 0):
         output = teamA;
-    elif (args[2] == 1):
+    elif (args[1] == 1):
         output = teamB;
     else:
         output = starter;
-        output[int(args[1])] = 0;
+        output[(int(args[2]) - 1)] = 0;
 
 render();
 
